@@ -5,7 +5,7 @@ import "./BaseTest.t.sol";
 import "src/07_Lift/Lift.sol";
 
 // forge test --match-contract LiftTest
-contract LiftTest is BaseTest {
+contract LiftTest is BaseTest, House {
     Lift instance;
     bool isTop = true;
 
