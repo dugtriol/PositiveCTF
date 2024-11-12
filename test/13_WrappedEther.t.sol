@@ -24,10 +24,6 @@ contract WrappedEtherTest is BaseTest {
     }
 
     function checkSuccess() internal view override {
-        console.log(
-            "checkSuccess: address(instance).balance: ",
-            address(instance).balance
-        );
         assertTrue(
             address(instance).balance == 0,
             "Solution is not solving the level"
@@ -43,8 +39,6 @@ contract Attack {
     }
 
     function start() public {
-        // uint256 balance = address(this).balance;
-        // console.log("Deposit:", balance);
         instance.deposit{value: address(this).balance}(address(this));
 
         instance.withdrawAll();
