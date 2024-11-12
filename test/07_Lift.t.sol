@@ -15,9 +15,13 @@ contract LiftTest is BaseTest {
         instance = new Lift();
     }
 
-    function testExploitLevel() public {
-        /* YOUR EXPLOIT GOES HERE */
+    function isTopFloor(uint256) external override returns (bool) {
+        isTop = !isTop;
+        return isTop;
+    }
 
+    function testExploitLevel() public {
+        instance.goToFloor(2);
         checkSuccess();
     }
 

